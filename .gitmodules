@@ -1,0 +1,3 @@
+[submodule "vendor/LazyGravity"]
+	path = vendor/LazyGravity
+	url = https://github.com/tokyoweb3/LazyGravity.git
