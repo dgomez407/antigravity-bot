@@ -127,6 +127,20 @@ The expected startup sequence is:
 The number of registered projects is a filesystem scan. It does not indicate
 that those projects currently have active CDP sessions.
 
+## Discord IDE lifecycle
+
+Use `/shutdown` in Discord to shut down the Antigravity IDE while keeping the
+LazyGravity bot online. This disconnects active CDP project connections but
+preserves project and session bindings.
+
+Use `/project list` to start Antigravity again and display the normal project
+list. Project CDP connections are recreated lazily when projects are used.
+
+Use `/stop` to interrupt active LLM generation without shutting down the IDE.
+
+`./run.sh stop` remains the full-stack shutdown command and stops both
+LazyGravity and Antigravity.
+
 ## Testing
 
 Launcher changes follow a focused TDD workflow:

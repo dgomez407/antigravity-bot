@@ -4,6 +4,21 @@ This log lists major releases and their key architectural updates.
 
 ---
 
+## v2.3.0 - Discord IDE Lifecycle Control
+
+- **Remote IDE Shutdown**: Added Discord `/shutdown` to shut down the
+  Antigravity IDE while leaving LazyGravity online.
+- **Command Compatibility**: Preserved `/stop` for interrupting active LLM
+  generation.
+- **Lazy Restart**: Changed `/project list` to start Antigravity when CDP is not
+  available before displaying projects.
+- **Process Scope**: IDE shutdown targets only the process owning the configured
+  CDP port; `./run.sh stop` remains the full-stack shutdown command.
+- **ADR Publication**: Added ADR 0006 to record the Discord IDE lifecycle
+  boundary.
+
+---
+
 ## v2.2.0 - Code Quality Linting
 
 - **Linter Integration**: Added `pylint` as a dev dependency managed by `uv`.
