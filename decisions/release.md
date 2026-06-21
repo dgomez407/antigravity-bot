@@ -38,6 +38,14 @@ This log lists major releases and their key architectural updates.
 
 ---
 
+## v2.0.1 - Submodule PR Synchronization & Validation
+
+- **PR Integration**: Pulled and synchronized accepted suggestions/changes for PR #178 (`fix/windows-multi-project-routing`) and PR #179 (`feature/discord-ide-lifecycle`) in `vendor/LazyGravity`.
+- **Validation**: Executed the full unit test suite (108 suites, 1416 tests) to verify functionality.
+- **Branch Merges**: Pushed the updated branches to `fork` and merged the validated changes into the submodule's `integration/pending-upstream-prs` and `main` branches.
+
+---
+
 ## v2.0.0 - Windows Multi-Project & Session Routing Fixes
 
 - **Multi-Project Connection**: Fixed Windows multi-project setups by forcing additional projects to open under `Antigravity IDE.exe`, linking them to the active Chrome DevTools Protocol (CDP) port.

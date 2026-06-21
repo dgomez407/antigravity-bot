@@ -21,3 +21,9 @@ htmlcov/
 
 # Databases
 antigravity.db*
+
+# Graphify
+graphify-out/
+
+# submodule
+vendor/LazyGravity
