@@ -4,6 +4,13 @@ This log lists major releases and their key architectural updates.
 
 ---
 
+## v2.3.3 - Robust Action UI Detectors
+
+- **Submodule Fix**: Updated `vendor/LazyGravity` to handle changes in Antigravity's UI. `planningDetector.ts` was relaxed to detect implementation plans when only a "Proceed" button is present (removing the strict requirement for an "Open" button).
+- **Submodule Fix**: `runCommandDetector.ts` was updated to recognize "command execution" as a valid card header for intercepting command execution permission prompts.
+
+---
+
 ## v2.3.2 - Robust Chat Session Activation Matching
 
 - **Submodule Fix**: Created `fix/robust-session-activation-matching` in `vendor/LazyGravity` to implement token prefix/word matching fallbacks in chat activation scripts, resolving routing failures from title variations.
