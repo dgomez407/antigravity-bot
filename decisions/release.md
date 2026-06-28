@@ -7,7 +7,7 @@ This log lists major releases and their key architectural updates.
 ## v2.3.2 - Robust Chat Session Activation Matching
 
 - **Submodule Fix**: Created `fix/robust-session-activation-matching` in `vendor/LazyGravity` to implement token prefix/word matching fallbacks in chat activation scripts, resolving routing failures from title variations.
-
+- **UI Unblocking Fix**: Ensured the IDE's "Past Conversations" Quick Pick panel is reliably closed via Escape key when a session match fails, preventing subsequent command injections from being absorbed by the search box.
 ---
 
 ## v2.3.1 - LazyGravity Submodule Update
