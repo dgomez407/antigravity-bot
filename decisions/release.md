@@ -4,6 +4,12 @@ This log lists major releases and their key architectural updates.
 
 ---
 
+## v2.3.2 - Robust Chat Session Activation Matching
+
+- **Submodule Fix**: Created `fix/robust-session-activation-matching` in `vendor/LazyGravity` to implement token prefix/word matching fallbacks in chat activation scripts, resolving routing failures from title variations.
+
+---
+
 ## v2.3.1 - LazyGravity Submodule Update
 
 - **Submodule Update**: Updated `vendor/LazyGravity` to include PR 178 and PR 179, addressing cross-platform process termination and OS dependency fixes in tests.
