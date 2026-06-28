@@ -4,6 +4,13 @@ This log lists major releases and their key architectural updates.
 
 ---
 
+## v2.3.4 - Question Modal Support
+
+- **Submodule Feature**: Created `feature/question-modal-support` in `vendor/LazyGravity` to add robust CDP detection and Discord select-menu interactions for Antigravity's new multiple-choice Question Modal UI.
+- **Submodule Fix**: Bypassed Electron DOM click limitations by resolving specific CDP interaction coordinates for dropdown options and submit buttons.
+
+---
+
 ## v2.3.3 - Robust Action UI Detectors
 
 - **Submodule Fix**: Updated `vendor/LazyGravity` to handle changes in Antigravity's UI. `planningDetector.ts` was relaxed to detect implementation plans when only a "Proceed" button is present (removing the strict requirement for an "Open" button).
