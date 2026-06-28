@@ -4,6 +4,12 @@ This log lists major releases and their key architectural updates.
 
 ---
 
+## v2.3.1 - LazyGravity Submodule Update
+
+- **Submodule Update**: Updated `vendor/LazyGravity` to include PR 178 and PR 179, addressing cross-platform process termination and OS dependency fixes in tests.
+
+---
+
 ## v2.3.0 - Discord IDE Lifecycle Control
 
 - **Remote IDE Shutdown**: Added Discord `/shutdown` to shut down the
