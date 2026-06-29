@@ -130,8 +130,7 @@ that those projects currently have active CDP sessions.
 
 ## Discord IDE lifecycle
 
-Use `/shutdown` in Discord to shut down the Antigravity IDE while keeping the
-LazyGravity bot online. The command safely verifies the CDP connection (via User-Agent and Browser strings) to ensure it only terminates the Antigravity IDE, preventing accidental closure of generic Chromium browsers on the same port. This disconnects active CDP project connections but preserves project and session bindings.
+Use `/shutdown` in Discord to Shut down the IDE while keeping the active CDP project connections and session bindings. The command safely verifies the CDP connection (via User-Agent and Browser strings) to ensure it only terminates the Antigravity IDE, preventing accidental closure of generic Chromium browsers on the same port.
 
 Use `/project list` to start Antigravity again and display the normal project
 list. Project CDP connections are recreated lazily when projects are used.
