@@ -3,7 +3,7 @@
 This project operates as a Discord control plane to remotely orchestrate and control local installations of Google's **Antigravity IDE** on Windows. By enabling a Chrome DevTools Protocol (CDP) WebSocket endpoint in the IDE, developers can send natural language prompts and instructions (e.g. from a mobile phone via Discord) to control the IDE, run code, and analyze workspaces remotely using local machine resources.
 
 ### Compatibility & Submodule Focus
-To run reliably with modern builds of the Antigravity IDE, the standard out-of-the-box LazyGravity package requires critical updates for session-routing and chat-panel recovery. This repository bundles a patched, compatible version of the engine as a local Git submodule at [vendor/LazyGravity](./vendor/LazyGravity).
+To run reliably with modern builds of the Antigravity IDE, the standard out-of-the-box LazyGravity package requires critical updates for session-routing, chat-panel recovery, and robust session activation matching (including UI unblocking). This repository bundles a patched, compatible version of the engine as a local Git submodule at [vendor/LazyGravity](./vendor/LazyGravity).
 
 For details on the core engine and its original installation prerequisites, refer to the:
 - Local setup instructions: [vendor/LazyGravity/README.md#quick-setup](./vendor/LazyGravity/README.md#quick-setup)
@@ -63,8 +63,8 @@ textbox, the locally modified LazyGravity recovery opens the Antigravity chat
 panel with `Ctrl+L` before retrying. `start` builds and runs this local checkout
 instead of the globally installed package.
 
-Pending upstream LazyGravity fixes are combined on the fork branch
-`integration/pending-upstream-prs`. The parent repository pins the exact tested
+Custom features and pending upstream LazyGravity fixes are combined on fork branches
+such as `integration/custom` or `integration/pending-upstream-prs`. The parent repository pins the exact tested
 integration commit through the `vendor/LazyGravity` submodule pointer, so a
 fresh checkout should include submodules:
 
@@ -72,19 +72,20 @@ fresh checkout should include submodules:
 git clone --recurse-submodules <parent-repository-url>
 ```
 
-Keep each upstream pull request on its own branch. When upstream accepts one,
-rebuild the integration branch from upstream `main`, merge only the remaining
-pending pull-request branches, retest, push with `--force-with-lease`, and
-update the parent repository's submodule pointer. See
-`decisions/0004-integrate-pending-lazygravity-prs.md`.
+**Submodule Fork Workflow & `main` Branch Rule:**
+- **Never commit directly to the fork's `main` branch.** The `main` branch of the `vendor/LazyGravity` submodule must remain a 1:1 identical mirror of the upstream vendor's `main` branch. 
+- Keep each upstream pull request on its own branch. 
+- Maintain custom features in an isolated `integration/*` branch.
+- To sync updates: pull the upstream vendor's `main` into your local `main`, push to your fork's `main` (so it mirrors upstream), and then rebase your `integration/*` branch on top of `main`. Finally, push the integration branch with `--force-with-lease` and update the parent repository's submodule pointer.
+See `decisions/0004-integrate-pending-lazygravity-prs.md`.
+
 
 The launcher also reads LazyGravity's own Windows temporary lock file. This
 allows `start`, `status`, and `stop` to adopt a bot that was started outside
 `run.sh`.
 
 Set `ANTIGRAVITY_EXE` in `.env` if Antigravity is installed somewhere else;
-use a Git Bash path such as
-`/c/Users/name/AppData/Local/Programs/Antigravity IDE/Antigravity IDE.exe`.
+the launcher automatically resolves the default `%LOCALAPPDATA%` installation path.
 Set `ANTIGRAVITY_PATH` to the equivalent Windows path when overriding the
 executable LazyGravity uses to open additional project windows. Additional
 projects must be opened by `Antigravity IDE.exe` so their workbench targets
@@ -111,7 +112,7 @@ curl http://127.0.0.1:9222/json/list
 ## Understanding the Discord CDP status
 
 The startup dashboard may say `CDP: Not connected` while CDP is healthy. In
-LazyGravity 0.8.1, that field means that no project has an active connection in
+LazyGravity 0.8.2, that field means that no project has an active connection in
 LazyGravity's in-memory connection pool. The pool is intentionally lazy and is
 populated only when a message is sent in a project-bound channel or `/join` is
 used.
@@ -130,8 +131,7 @@ that those projects currently have active CDP sessions.
 ## Discord IDE lifecycle
 
 Use `/shutdown` in Discord to shut down the Antigravity IDE while keeping the
-LazyGravity bot online. This disconnects active CDP project connections but
-preserves project and session bindings.
+LazyGravity bot online. The command safely verifies the CDP connection (via User-Agent and Browser strings) to ensure it only terminates the Antigravity IDE, preventing accidental closure of generic Chromium browsers on the same port. This disconnects active CDP project connections but preserves project and session bindings.
 
 Use `/project list` to start Antigravity again and display the normal project
 list. Project CDP connections are recreated lazily when projects are used.
@@ -150,9 +150,9 @@ uv run pytest
 ```
 
 The tests validate Bash syntax, the command/help contract, unknown-command
-handling, stale-lock cleanup, and adoption of LazyGravity's final Node PID
-after the pnpm wrapper exits. Live Discord and desktop lifecycle behavior still
-requires an operator check with:
+handling, stale-lock cleanup, adoption of LazyGravity's final Node PID
+after the pnpm wrapper exits, and enforce code quality checks with `pylint`.
+Live Discord and desktop lifecycle behavior still requires an operator check with:
 
 ```bash
 ./run.sh stop
@@ -164,4 +164,4 @@ The repository explicitly targets the LazyGravity-compatible IDE at
 `%LOCALAPPDATA%\Programs\Antigravity IDE\Antigravity IDE.exe`.
 The separate `Programs\Antigravity\Antigravity.exe` application exposes a
 generic web page rather than a VS Code workbench target and cannot be controlled
-by LazyGravity 0.8.1.
+by LazyGravity 0.8.2.
