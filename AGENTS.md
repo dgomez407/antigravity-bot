@@ -35,7 +35,7 @@ curl http://127.0.0.1:9222/json/list
 
 ## CDP Behavior
 
-LazyGravity 0.8.1 uses lazy per-project CDP connections. Its Discord startup
+LazyGravity 0.8.2 uses lazy per-project CDP connections. Its Discord startup
 dashboard reports `CDP: Not connected` until a prompt is sent in a bound
 project channel or `/join` connects a project. This does not by itself mean
 that port `9222` is unavailable. Use `lazy-gravity doctor` and `/json/list` to
@@ -59,9 +59,11 @@ required when process-management behavior changes.
   process owning the configured CDP port.
 - Update `readme.md` whenever operator behavior changes.
 - Keep `vendor/LazyGravity` changes as local submodule commits only. Do not
-  push, fork, or open upstream pull requests.
+  push, fork, or open upstream pull requests (unless strictly necessary).
+- **Submodule Fork Workflow:** Keep the `vendor/LazyGravity` submodule's `main` branch as a 1:1 mirror of the upstream vendor's `main` branch. Never commit or merge custom features directly into the fork's `main` branch. Always maintain custom features in an isolated `integration/*` branch (like `integration/custom`) and rebase them on top of `main` when pulling vendor updates.
 
 ## Mandatory Closing Step
+
 
 Before concluding any changes, update `decisions/release.md`.
 

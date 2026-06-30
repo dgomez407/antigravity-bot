@@ -4,6 +4,29 @@ This log lists major releases and their key architectural updates.
 
 ---
 
+## v2.4.0 - Structured Discord Rendering & Attachments
+
+- **Submodule Feature**: Added structured DOM extraction for Antigravity 2.0 to properly identify plan cards, file changes, and action buttons.
+- **Submodule Feature**: Implemented a native Discord renderer to parse extracted Antigravity responses into rich Discord Embeds, avoiding flattened markdown clutter.
+- **Submodule Feature**: Supported Discord message replies by dynamically prepending the replied-to message content into the prompt context for the LLM.
+- **Submodule Feature**: Supported Discord text attachments (under 50KB), fetching and injecting their contents into the prompt.
+- **ADR Publication**: Added [ADR 0007](./0007-structured-discord-rendering.md) to record the switch from regex extraction to structured DOM extraction and Discord Rendering.
+
+---
+
+## v2.3.6 - Discord File Open Support & Disallow Plan Rejection
+
+- **Submodule Feature**: Implemented `fileOpenCache` to map file hashes to URLs, allowing users to click Discord buttons to open cited files (such as implementation plans) in the Antigravity IDE via CDP.
+- **Submodule Security**: Explicitly disabled the "reject" action for planning dialogs on Discord and Telegram, responding with a message that plan rejection is not allowed.
+
+---
+
+## v2.3.5 - Shutdown Command Bug Fix
+
+- **Submodule Fix**: Fixed the `/shutdown` command in `vendor/LazyGravity` to properly detect the Antigravity IDE by checking the CDP `User-Agent` string, as the `Browser` string sometimes reports generic Chrome versions.
+
+---
+
 ## v2.3.4 - Question Modal Support
 
 - **Submodule Feature**: Created `feature/question-modal-support` in `vendor/LazyGravity` to add robust CDP detection and Discord select-menu interactions for Antigravity's new multiple-choice Question Modal UI.

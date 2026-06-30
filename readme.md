@@ -109,6 +109,13 @@ inspect its targets directly:
 curl http://127.0.0.1:9222/json/list
 ```
 
+## Rich Discord Integration (Antigravity 2.0)
+
+With Antigravity 2.0, LazyGravity extracts structured output from the chat UI, providing:
+- **Rich Embeds**: Implementation plans, file modifications, and agent tools are rendered as native Discord embeds and buttons rather than flattened text.
+- **Message Replies**: Replying to a previous Discord message prepends the original text to your prompt so the agent understands the context.
+- **Attachments**: You can upload image attachments directly via Discord. Text-based attachments (under 50KB) are fetched and their contents injected into the prompt, allowing you to provide logs or small snippets natively through Discord.
+
 ## Understanding the Discord CDP status
 
 The startup dashboard may say `CDP: Not connected` while CDP is healthy. In

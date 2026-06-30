@@ -7,7 +7,7 @@ Accepted on 2026-06-11.
 ## Context
 
 A responding CDP browser endpoint does not guarantee that LazyGravity can
-control an Antigravity IDE workspace. LazyGravity 0.8.1 also reports only
+control an Antigravity IDE workspace. LazyGravity 0.8.2 also reports only
 active lazy project sessions in its Discord startup dashboard.
 
 ## Decision
@@ -28,7 +28,7 @@ bot without relying on broad Node process matching.
 The controlled IDE executable is the explicit `.env` value
 `%LOCALAPPDATA%\Programs\Antigravity IDE\Antigravity IDE.exe`.
 The launcher requires a VS Code-style `workbench/workbench.html` target because
-that is the target type supported by LazyGravity 0.8.1.
+that is the target type supported by LazyGravity 0.8.2.
 
 ## Consequences
 
@@ -41,7 +41,7 @@ documented launcher.
 
 Running `run.sh` without arguments displays help instead of starting services.
 
-Because LazyGravity 0.8.1 does not open the chat panel when injection finds no
+Because LazyGravity 0.8.2 does not open the chat panel when injection finds no
 textbox, the local `vendor/LazyGravity` submodule contains a source-level fix
 that reuses LazyGravity's existing `Ctrl+L` panel opener before retrying
 injection. `run.sh start` builds and runs the submodule rather than modifying
