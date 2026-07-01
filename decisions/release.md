@@ -4,31 +4,40 @@ This log lists major releases and their key architectural updates.
 
 ---
 
-## v2.3.6 - Strict File Change Channel Isolation
+## v2.4.0 - Structured Discord Rendering & Attachments
 
-- **Security Fix**: Fixed cross-project command bleeding by updating `fileChangeButtonAction` to enforce strict channel scoping, preventing legacy IDs from triggering commands in the wrong context (see [ADR 0008](./0008-enforce-strict-channel-isolation-for-file-changes.md)).
-- **Bug Fix**: Removed the `getLatestConversationWithArtifacts()` fallback to ensure Discord strictly binds to the active IDE session's artifacts, preventing past implementation plans from bleeding into unrelated projects (see [ADR 0009](./0009-strict-artifact-resolution.md)).
+- **Submodule Feature**: Added structured DOM extraction for Antigravity 2.0 to properly identify plan cards, file changes, and action buttons.
+- **Submodule Feature**: Implemented a native Discord renderer to parse extracted Antigravity responses into rich Discord Embeds, avoiding flattened markdown clutter.
+- **Submodule Feature**: Supported Discord message replies by dynamically prepending the replied-to message content into the prompt context for the LLM.
+- **Submodule Feature**: Supported Discord text attachments (under 50KB), fetching and injecting their contents into the prompt.
+- **ADR Publication**: Added [ADR 0007](./0007-structured-discord-rendering.md) to record the switch from regex extraction to structured DOM extraction and Discord Rendering.
+
+---
+
 ## v2.3.7 - Custom Channel Naming
 
 - **Enhancement**: Implemented `/new <name>` slash command option to allow users to specify a custom name for the Discord channel. The custom name is additionally injected into the IDE conversation UI (see [ADR 0010](./0010-custom-channel-naming-for-new-command.md)).
 
 ---
 
-## v2.3.6 - Strict File Change Channel Isolation
+## v2.3.6 - Strict File Change Channel Isolation & Discord File Open Support
 
 - **Security Fix**: Fixed cross-project command bleeding by updating `fileChangeButtonAction` to enforce strict channel scoping, preventing legacy IDs from triggering commands in the wrong context (see [ADR 0008](./0008-enforce-strict-channel-isolation-for-file-changes.md)).
 - **Bug Fix**: Removed the `getLatestConversationWithArtifacts()` fallback to ensure Discord strictly binds to the active IDE session's artifacts, preventing past implementation plans from bleeding into unrelated projects (see [ADR 0009](./0009-strict-artifact-resolution.md)).
 - **Bug Fix**: Added `review` to `PROCEED_PATTERNS` so that the "Review" button in the IDE planning UI correctly propagates to Discord (see [ADR 0011](./0011-discord-review-button-detection.md)).
 - **Enhancement**: The `/new` slash command now explicitly signals the IDE to start a new chat session via CDP, ensuring the active page correctly matches the newly created Discord channel (see [ADR 0012](./0012-synchronized-new-chat-session-lifecycle.md)).
 - **ADR Publication**: Added ADR 0008 to document the strict channel isolation requirement for file changes.
+- **Submodule Feature**: Implemented `fileOpenCache` to map file hashes to URLs, allowing users to click Discord buttons to open cited files (such as implementation plans) in the Antigravity IDE via CDP.
+- **Submodule Security**: Explicitly disabled the "reject" action for planning dialogs on Discord and Telegram, responding with a message that plan rejection is not allowed.
 
 ---
 
-## v2.3.5 - Secure Workspace Interaction Routing
+## v2.3.5 - Secure Workspace Interaction Routing & Shutdown Command Bug Fix
 
 - **Submodule Fix**: Updated `vendor/LazyGravity` to completely eliminate the global `lastActiveWorkspace` fallback for Discord button and modal interactions.
 - **Security Update**: Actions are now strictly routed and bounded to the specific workspace paired with the originating Discord `channel.id` via the injected `WorkspaceCommandHandler`.
 - **ADR Publication**: Added ADR 0007 to record the strict workspace interaction routing decision.
+- **Submodule Fix**: Fixed the `/shutdown` command in `vendor/LazyGravity` to properly detect the Antigravity IDE by checking the CDP `User-Agent` string, as the `Browser` string sometimes reports generic Chrome versions.
 
 ---
 
