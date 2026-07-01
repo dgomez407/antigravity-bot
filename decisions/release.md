@@ -14,6 +14,13 @@ This log lists major releases and their key architectural updates.
 
 ---
 
+## v2.3.9 - Strict Cross-Project Artifact Isolation & Stable Duplicate Detection
+
+- **Bug Fix**: Fixed duplicate Discord events caused by rapidly toggling Proceed/Review button text. `planningDetector` now deduplicates events via a hash of the underlying plan contents instead of button text.
+- **Security Fix**: Upgraded `ArtifactService` to read the modern `.system_generated/logs/transcript.jsonl` file to perform strict string-matching on the workspace directory path, strictly preventing artifacts from completely unrelated projects from bleeding into the current Discord context (see [ADR 0014](./0014-prevent-artifact-cross-project-pollution.md)).
+
+---
+
 ## v2.3.8 - Duplicate Message Prevention (Debounced Polling)
 
 - **Bug Fix**: Implemented debounce resolution logic in all CDP detectors in `vendor/LazyGravity` to completely prevent duplicate Discord messages caused by UI flicker or momentary re-renders (see [ADR 0013](./0013-debounced-cdp-detector-polling.md)).
