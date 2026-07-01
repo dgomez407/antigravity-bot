@@ -4,6 +4,22 @@ This log lists major releases and their key architectural updates.
 
 ---
 
+## v2.3.6 - Strict File Change Channel Isolation
+
+- **Security Fix**: Fixed cross-project command bleeding by updating `fileChangeButtonAction` to enforce strict channel scoping, preventing legacy IDs from triggering commands in the wrong context (see [ADR 0008](./0008-enforce-strict-channel-isolation-for-file-changes.md)).
+- **Bug Fix**: Removed the `getLatestConversationWithArtifacts()` fallback to ensure Discord strictly binds to the active IDE session's artifacts, preventing past implementation plans from bleeding into unrelated projects (see [ADR 0009](./0009-strict-artifact-resolution.md)).
+- **Bug Fix**: Added `review` to `PROCEED_PATTERNS` so that the "Review" button in the IDE planning UI correctly propagates to Discord.
+- **Enhancement**: The `/new` slash command now explicitly signals the IDE to start a new chat session via CDP, ensuring the active page correctly matches the newly created Discord channel.
+- **ADR Publication**: Added ADR 0008 to document the strict channel isolation requirement for file changes.
+
+---
+
+## v2.3.7 - Custom Channel Naming
+
+- **Enhancement**: Implemented `/new <name>` slash command option to allow users to specify a custom name for the Discord channel. The custom name is additionally injected into the IDE conversation UI (see [ADR 0010](./0010-custom-channel-naming-for-new-command.md)).
+
+---
+
 ## v2.3.5 - Secure Workspace Interaction Routing
 
 - **Submodule Fix**: Updated `vendor/LazyGravity` to completely eliminate the global `lastActiveWorkspace` fallback for Discord button and modal interactions.
