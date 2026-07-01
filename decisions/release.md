@@ -4,6 +4,12 @@ This log lists major releases and their key architectural updates.
 
 ---
 
+## v2.3.8 - Duplicate Message Prevention (Debounced Polling)
+
+- **Bug Fix**: Implemented debounce resolution logic in all CDP detectors in `vendor/LazyGravity` to completely prevent duplicate Discord messages caused by UI flicker or momentary re-renders (see [ADR 0013](./0013-debounced-cdp-detector-polling.md)).
+
+---
+
 ## v2.3.6 - Strict File Change Channel Isolation
 
 - **Security Fix**: Fixed cross-project command bleeding by updating `fileChangeButtonAction` to enforce strict channel scoping, preventing legacy IDs from triggering commands in the wrong context (see [ADR 0008](./0008-enforce-strict-channel-isolation-for-file-changes.md)).
