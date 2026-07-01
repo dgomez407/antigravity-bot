@@ -4,6 +4,14 @@ This log lists major releases and their key architectural updates.
 
 ---
 
+## v2.3.5 - Secure Workspace Interaction Routing
+
+- **Submodule Fix**: Updated `vendor/LazyGravity` to completely eliminate the global `lastActiveWorkspace` fallback for Discord button and modal interactions.
+- **Security Update**: Actions are now strictly routed and bounded to the specific workspace paired with the originating Discord `channel.id` via the injected `WorkspaceCommandHandler`.
+- **ADR Publication**: Added ADR 0007 to record the strict workspace interaction routing decision.
+
+---
+
 ## v2.3.4 - Question Modal Support
 
 - **Submodule Feature**: Created `feature/question-modal-support` in `vendor/LazyGravity` to add robust CDP detection and Discord select-menu interactions for Antigravity's new multiple-choice Question Modal UI.
