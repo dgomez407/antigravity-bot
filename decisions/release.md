@@ -14,6 +14,12 @@ This log lists major releases and their key architectural updates.
 
 ---
 
+## v2.3.8 - Duplicate Message Prevention (Debounced Polling)
+
+- **Bug Fix**: Implemented debounce resolution logic in all CDP detectors in `vendor/LazyGravity` to completely prevent duplicate Discord messages caused by UI flicker or momentary re-renders (see [ADR 0013](./0013-debounced-cdp-detector-polling.md)).
+
+---
+
 ## v2.3.7 - Custom Channel Naming
 
 - **Enhancement**: Implemented `/new <name>` slash command option to allow users to specify a custom name for the Discord channel. The custom name is additionally injected into the IDE conversation UI (see [ADR 0010](./0010-custom-channel-naming-for-new-command.md)).
