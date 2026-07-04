@@ -4,6 +4,19 @@ This log lists major releases and their key architectural updates.
 
 ---
 
+## v2.4.3 - Support IDE Accept All Custom Elements
+
+- **Submodule Fix**: Updated `approvalDetector.ts` in `vendor/LazyGravity` to detect custom DOM elements (`span.cursor-pointer` and `div.cursor-pointer`) in `buildClickScript` and dropdown selectors, resolving the bug where Discord's "Allow" button failed to click the IDE's "Accept all" action.
+
+---
+
+## v2.4.2 - Add npm Test Support to Launcher
+
+- **Launcher Feature**: Updated the `test` command in `run.sh` to execute the npm test suite in the `vendor/LazyGravity` submodule in addition to the Python test suite.
+- **ADR Publication**: Added [ADR 0016](./0016-add-npm-test-support.md) to record the addition of the npm test support to the launcher.
+
+---
+
 ## v2.4.1 - Add Test Command to Launcher
 
 - **Launcher Feature**: Added a `test` command to `run.sh` to execute the Python test suite via `uv run pytest`.
