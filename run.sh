@@ -100,7 +100,7 @@ show_help() {
     '  build-lazygravity Build the local LazyGravity submodule.' \
     '  doctor            Run LazyGravity environment and dependency checks.' \
     '  cdp-status        Show CDP endpoint health and available target titles.' \
-    '  test              Run the Python test suite.' \
+    '  test              Run the Python and npm test suites.' \
     '' \
     'Options:' \
     '  -h, --help        Show this help menu.' \
@@ -380,8 +380,18 @@ build_lazy_gravity() {
 
 run_tests() {
   require_command uv
-  log_info "Running tests..."
+  log_info "Running Python tests..."
   uv run pytest
+
+  if [[ -d "$LAZY_GRAVITY_DIR" ]]; then
+    require_command npm
+    log_info "Running npm tests in LazyGravity..."
+    (
+      cd "$LAZY_GRAVITY_DIR"
+      [[ -d node_modules ]] || npm ci
+      npm test
+    )
+  fi
 }
 
 start_stack() {

@@ -4,6 +4,73 @@ This log lists major releases and their key architectural updates.
 
 ---
 
+## v2.4.11 - De-duplicate Prompt Monitoring Loops
+
+- **Submodule Fix**: Prevented duplicate final outputs on Discord by tracking and de-duplicating active prompt monitoring loops. Added `activeMonitors` tracking to `PromptDispatcher` and supported `onMonitorCreated` to abort/stop previous active monitors on the same channel when a new prompt or resume action is triggered.
+- **Submodule Test**: Added unit tests in `tests/services/promptDispatcher.test.ts` to verify monitor de-duplication and cancellation behavior.
+- **ADR Publication**: Added [ADR 0018](./0018-de-duplicate-active-prompt-monitors.md) to document the solution.
+
+---
+
+## v2.4.10 - Walkthrough Reviews on Approval Dialogs
+
+- **Submodule Feature**: Live response updates when paused. Added listener for `approval_required` event inside `bot/index.ts` to push the response text generated so far using `upsertLiveResponseEmbeds` when the IDE is waiting for user approvals.
+- **Submodule Feature**: Walkthrough & task reviews on approval embeds. Updated `cdpBridgeManager.ts` to query active conversation artifacts and pass custom IDs for `walkthrough.md` and `task.md` to `buildApprovalNotification`.
+- **Submodule Feature**: Appended a second row of review buttons directly on the `Approval Required` notification message in `notificationSender.ts`.
+- **Submodule Test**: Added unit tests to `notificationSender.test.ts` to verify the new two-row buttons layout.
+
+---
+
+## v2.4.9 - Fix Brain Path Mismatch, Inactivity Prompts, and Workspace Isolation Loop
+
+- **Submodule Fix**: Dynamically resolve the brain base path by checking `.gemini/antigravity-ide/brain` first, and falling back to `.gemini/antigravity/brain`. This aligns the Discord bot with the actual directory used by Antigravity IDE on Windows.
+- **Submodule Fix**: Upgraded workspace regex path isolation to ignore `.gemini`, `brain`, or `antigravity` path segments, preventing feedback loops when coding assistant diagnostic commands are run.
+- **Submodule Fix**: Added regex test for `Working.` status to prevent premature completion triggers during command execution approvals.
+- **ADR Publication**: Added [ADR 0017](./0017-fix-brain-path-and-activity-detection.md) to record the fixes.
+
+---
+
+## v2.4.8 - Fix Artifact Directory Path Resolution
+
+- **Submodule Fix**: Fixed artifact directory path resolution in the file opening interaction handler. Instead of incorrectly joining `workspaceBaseDir` with `.gemini/antigravity/brain` (which produced path mismatches like `C:\Users\dgomez\code\i\.gemini\...`), it now queries the `ArtifactService` instance's `listArtifacts()` method to resolve absolute paths, falling back to the standard home directory `os.homedir()` brain path. This ensures artifact review buttons resolve successfully on Windows without throwing `ENOENT`.
+- **Submodule Feature**: Prevented showing review buttons for stale `walkthrough.md` and `task.md` files during the planning phase. The bot now compares their filesystem modification timestamps (`mtimeMs` via `fs.statSync()`) against `implementation_plan.md`; if the plan's file write time is newer than or equal to the task/walkthrough, those buttons are suppressed.
+- **Submodule Fix**: Made `isReviewBtn` detection robust by checking the `art:` customId prefix and file endings, preventing review buttons from falling back to IDE-opening CLI calls if the interaction's component label is missing or undefined.
+- **Submodule Fix**: Restricted the `getLatestConversationWithArtifacts` fallback search and `findConversationByTitle` lookup to the channel's active workspace folder using a precise path segment RegExp match (e.g. `[\/\\]test(?:[\/\\]|$)`). This prevents the Discord bot from matching unrelated IDE agent conversations that contain generic words (like "test") in their path or text.
+- **Submodule Fix**: Updated `getLatestConversationWithArtifacts` workspace filtering logic to strictly return the most recent conversation in the filtered workspace. If the latest conversation in that workspace does not have any artifacts (which happens when a new execution run starts and has not yet generated its final artifacts), it returns `null` instead of falling back to older completed conversations in that workspace. This completely prevents displaying stale walkthrough/task buttons from past completed runs during active or paused execution states.
+- **Submodule Fix**: Switched timestamp comparison from the mutable `.metadata.json`'s `updatedAt` field to the actual operating system filesystem modification time (`mtimeMs`) for all artifact fresh/stale checks, making the check completely immune to missing or static metadata fields.
+
+---
+
+## v2.4.7 - Non-Expiring File & Artifact Review Buttons
+
+- **Submodule Feature**: Implemented non-expiring `customId` formats for file open buttons (e.g. `file_open:rel:<relativePath>` and `file_open:art:<conversationId>:<filename>`). This allows the bot to resolve files on-the-fly dynamically without relying on the ephemeral in-memory cache, ensuring buttons in Discord history never expire across bot restarts or cache eviction.
+- **Submodule Feature**: Bypassed workspace checks when opening artifacts. Since artifacts reside outside the project workspace in the user's brain directory, they can now be opened and reviewed even if the channel has no active workspace binding.
+- **Submodule Test**: Added unit tests to verify absolute resolution and bypassed workspace checks for relative paths and artifacts in `tests/events/interactionCreateHandler.question.test.ts`.
+
+---
+
+## v2.4.6 - Review task.md Button & Regression Tests
+
+- **Submodule Feature**: Updated artifact check loop in `bot/index.ts` to automatically include `task.md` and `walkthrough.md` as cited files if they exist in the conversation artifacts, rendering green "Review task.md" and "Review walkthrough.md" buttons in the final Discord response even if they are not explicitly mentioned in the text.
+- **Submodule Test**: Added a new unit test suite in `tests/events/interactionCreateHandler.question.test.ts` to verify that question select and skip actions resume monitoring correctly via `promptDispatcher.resume()`.
+
+---
+
+## v2.4.5 - Question Modal Resume Monitoring
+
+- **Submodule Fix**: Extended `createQuestionSelectAction` in `src/handlers/questionSelectAction.ts` and `createQuestionSkipAction` in `src/handlers/questionSkipAction.ts` to return the execution success status boolean.
+- **Submodule Fix**: Updated `events/interactionCreateHandler.ts` to capture the return value of question select/skip actions and invoke `promptDispatcher.resume()` on success. This ensures Discord immediately resumes session monitoring after multiple-choice questions or modal questions are submitted or skipped, preventing the bot from remaining stuck on `IDE is working on the response...` and allowing the final walkthroughs, task lists, and review buttons to render properly.
+
+---
+
+## v2.4.4 - webview Iframe context Resolution & Artifact Detection Fallback
+
+- **Submodule Fix**: Updated `chatSessionService.ts` and `cdpBridgeManager.ts` in `vendor/LazyGravity` to fallback to `document.body` when evaluating DOM state inside same-origin webview iframes. This resolves the bug where `activeConversationId` was null because `.antigravity-agent-side-panel` was unreachable from the iframe context.
+- **Submodule Fix**: Added fallback in `bot/index.ts` to `getLatestConversationWithArtifacts()` when `activeConversationId` is not resolved via title matching. This ensures the correct active conversation folder in the brain directory is located, and its associated artifacts (like `walkthrough.md` and `task.md`) are successfully resolved for review button creation.
+- **Submodule Fix**: Updated `events/interactionCreateHandler.ts` to call `promptDispatcher.resume` when the "Allow" or "Allow Chat" buttons on the `Approval Required` notification are accepted. This ensures that Discord resumes monitoring the chat session after file approval, allowing it to capture and post the final output and review buttons for walkthroughs/tasks.
+
+---
+
 ## v2.4.3 - Support IDE Accept All Custom Elements
 
 - **Submodule Fix**: Updated `approvalDetector.ts` in `vendor/LazyGravity` to detect custom DOM elements (`span.cursor-pointer` and `div.cursor-pointer`) in `buildClickScript` and dropdown selectors, resolving the bug where Discord's "Allow" button failed to click the IDE's "Accept all" action.
