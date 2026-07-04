@@ -100,6 +100,7 @@ show_help() {
     '  build-lazygravity Build the local LazyGravity submodule.' \
     '  doctor            Run LazyGravity environment and dependency checks.' \
     '  cdp-status        Show CDP endpoint health and available target titles.' \
+    '  test              Run the Python test suite.' \
     '' \
     'Options:' \
     '  -h, --help        Show this help menu.' \
@@ -125,7 +126,7 @@ parse_arguments() {
       -h|--help)
         ACTION='help'
         ;;
-      start|stop|status|repair-sessions|build-lazygravity|doctor|cdp-status)
+      start|stop|status|repair-sessions|build-lazygravity|doctor|cdp-status|test)
         ACTION="$1"
         ;;
       --no-color)
@@ -377,6 +378,12 @@ build_lazy_gravity() {
   log_success "Local LazyGravity build completed."
 }
 
+run_tests() {
+  require_command uv
+  log_info "Running tests..."
+  uv run pytest
+}
+
 start_stack() {
   require_command curl
   require_command grep
@@ -413,6 +420,7 @@ main() {
       exec lazy-gravity doctor
       ;;
     cdp-status) show_cdp_status ;;
+    test) run_tests ;;
   esac
 }
 

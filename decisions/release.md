@@ -4,6 +4,13 @@ This log lists major releases and their key architectural updates.
 
 ---
 
+## v2.4.1 - Add Test Command to Launcher
+
+- **Launcher Feature**: Added a `test` command to `run.sh` to execute the Python test suite via `uv run pytest`.
+- **ADR Publication**: Added [ADR 0015](./0015-add-test-command-to-launcher.md) to record the addition of the test command to the core launcher.
+
+---
+
 ## v2.4.0 - Structured Discord Rendering & Attachments
 
 - **Submodule Feature**: Added structured DOM extraction for Antigravity 2.0 to properly identify plan cards, file changes, and action buttons.
