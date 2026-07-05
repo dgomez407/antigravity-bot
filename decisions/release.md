@@ -4,6 +4,20 @@ This log lists major releases and their key architectural updates.
 
 ---
 
+## dev - Rebase Schedule Service Feature Branch
+
+- **Submodule Rebase**: Cleaned up and rebased the `feature/schedule-service` branch in `vendor/LazyGravity` onto `main`.
+- **Cherry-Pick & Merge**: Cherry-picked and merged the core schedule-service baseline commit (`5c8ff76`) to resolve slash commands, DB initialization, and registration.
+- **Clear Command**: Added the `/schedule clear` subcommand to clear all scheduled tasks in memory and SQLite, resetting the autoincrement sequence back to 0.
+- **Backup and Restore Commands**: Added `/schedule backup` to export all schedules as a portable JSON file attachment, and `/schedule restore` to upload and import schedules, running inside an SQLite transaction and resetting crons in memory.
+- **Queue Serialization**: Centralized `WorkspaceQueue` instantiation in `src/bot/index.ts` and shared it with `src/events/messageCreateHandler.ts` and the scheduler callback, ensuring scheduled prompts and user prompts execute serially per workspace path.
+- **Next-Run Time Calculation**: Integrated `cron-parser` dependency and updated `/schedule list` and `/schedule add` outputs to show next localized run times.
+- **Path Resolution Fix**: Resolved a path comparison bug in `scheduleJobCallback` by converting relative binding paths to absolute paths and comparing them case-insensitively, correcting the mismatch where the binding repo stored relative paths while the scheduler record stored absolute paths.
+- **ADR Publication**: Added [ADR 0019](./0019-wire-lazy-scheduler-discord.md) to document the design.
+- **Verification**: Built the TS compiler successfully and verified that all 1,497 tests pass cleanly.
+
+---
+
 ## v2.4.12 - Code-Quality and Validation Improvements
 
 - **Submodule Fix**: Exposed `getBrainBasePath()` public getter on `ArtifactService` and aligned RegExp escaping of workspace filters to reuse `cdpService`'s literal pattern, preventing errors on special folder names.
