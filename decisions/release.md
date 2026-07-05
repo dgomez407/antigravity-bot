@@ -4,6 +4,24 @@ This log lists major releases and their key architectural updates.
 
 ---
 
+## v2.4.12 - Code-Quality and Validation Improvements
+
+- **Submodule Fix**: Exposed `getBrainBasePath()` public getter on `ArtifactService` and aligned RegExp escaping of workspace filters to reuse `cdpService`'s literal pattern, preventing errors on special folder names.
+- **Submodule Fix**: Balanced curly braces in the browser template context `WORKSPACE_STATE_SCRIPT` of `cdpService.ts` to ensure it always evaluates properly.
+- **Submodule Fix**: Restored the `opts.hasOpenButton !== false` check inside `notificationSender.ts`.
+- **Submodule Fix**: Made `showModal` optional on the platform interface, removing Telegram's throwing stub, and updated Discord's wrapper `deferUpdate()` to check `interaction.isFromMessage()`.
+- **Submodule Fix**: Checked `channelId` and early-responded if missing in `genericActionButtonAction.ts` and forwarded channel-specific resolved account names to `getConnected()`.
+- **Submodule Fix**: Checked `interaction.showModal` capability in `planningButtonAction.ts` and caught modal failures, falling back to open button clicking.
+- **Submodule Fix**: Localized failure comment message via `t(...)` in `planningModalSubmitAction.ts`.
+- **Submodule Fix**: Fixed inverted success/error branching in `interactionCreateHandler.ts`'s CLI-open execution callback.
+- **Submodule Fix**: Added `earlyConvIdInFlight` guard and gated the `1000ms` completion delay in `bot/index.ts`.
+- **Submodule Fix**: Caching `/json/list` targets inside `doctor.ts` to eliminate duplicate HTTP requests.
+- **Submodule Fix**: Corrected comment documentation in `fileOpenCache.ts`.
+- **Submodule Test**: Added unit tests to `genericActionButtonAction.test.ts` and `planningButtonAction.test.ts`, and updated `promptDispatcher.test.ts` to mock distinct monitors.
+- **Safeguard Customization**: Created a workspace custom skill in `.agents/skills/safeguard-testing/SKILL.md` to define safe testing behaviors.
+
+---
+
 ## v2.4.11 - De-duplicate Prompt Monitoring Loops
 
 - **Submodule Fix**: Prevented duplicate final outputs on Discord by tracking and de-duplicating active prompt monitoring loops. Added `activeMonitors` tracking to `PromptDispatcher` and supported `onMonitorCreated` to abort/stop previous active monitors on the same channel when a new prompt or resume action is triggered.
