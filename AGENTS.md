@@ -29,6 +29,7 @@ Run from Git Bash in the repository root:
 ./run.sh build-lazygravity
 ./run.sh doctor
 ./run.sh cdp-status
+./run.sh test
 lazy-gravity doctor
 curl http://127.0.0.1:9222/json/list
 ```
@@ -43,7 +44,7 @@ diagnose the transport.
 
 ## Testing
 
-Run `uv run pytest` after launcher changes. Add or update a regression test
+Run `./run.sh test` after launcher changes. Add or update a regression test
 before fixing lifecycle bugs. Live `stop`/`start`/`status` validation is
 required when process-management behavior changes.
 
