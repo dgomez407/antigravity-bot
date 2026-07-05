@@ -1,0 +1,29 @@
+# Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local configuration and logs
+.env
+*.log
+.lazy-gravity.pid
+
+# Databases
+antigravity.db*
+
+# Graphify
+graphify-out/
+
+# submodule
+vendor/LazyGravity
