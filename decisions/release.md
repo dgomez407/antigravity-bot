@@ -19,6 +19,7 @@ This log lists major releases and their key architectural updates.
 - **Submodule Fix**: Corrected comment documentation in `fileOpenCache.ts`.
 - **Submodule Test**: Added unit tests to `genericActionButtonAction.test.ts` and `planningButtonAction.test.ts`, and updated `promptDispatcher.test.ts` to mock distinct monitors.
 - **Safeguard Customization**: Created a workspace custom skill in `.agents/skills/safeguard-testing/SKILL.md` to define safe testing behaviors.
+- **Documentation**: Streamlined `readme.md` instructions and updated testing guidance to recommend `./run.sh test`.
 
 ---
 
