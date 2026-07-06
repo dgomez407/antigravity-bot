@@ -19,6 +19,18 @@ readonly SCRIPT_DIR="$(cd "$script_parent" && pwd)"
 unset script_parent
 cd "$SCRIPT_DIR"
 
+# Fallback to Windows executables if running under environments (like WSL)
+# where Windows executables are in PATH but without automatic extension resolution.
+if ! command -v uv >/dev/null 2>&1 && command -v uv.exe >/dev/null 2>&1; then
+  uv() { uv.exe "$@"; }
+fi
+if ! command -v node >/dev/null 2>&1 && command -v node.exe >/dev/null 2>&1; then
+  node() { node.exe "$@"; }
+fi
+if ! command -v python >/dev/null 2>&1 && command -v python.exe >/dev/null 2>&1; then
+  python() { python.exe "$@"; }
+fi
+
 readonly DEBUGGING_PORT="${DEBUGGING_PORT:-9222}"
 if [[ -z "${ANTIGRAVITY_EXE:-}" ]]; then
   if [[ -n "${LOCALAPPDATA:-}" ]]; then

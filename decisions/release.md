@@ -4,6 +4,13 @@ This log lists major releases and their key architectural updates.
 
 ---
 
+## v2.4.13 - Command Fallback Support in Launcher
+
+- **Launcher Fix**: Added dynamic fallback wrapper logic to `run.sh` for `uv`, `node`, and `python` commands. If the command is not directly available but a `.exe` suffix version is found in the PATH (such as in WSL or mixed shell environments on Windows), `run.sh` dynamically defines a shell function wrapper to map the command to its Windows executable equivalent. This allows agents and automation to invoke the launcher's commands without workaround or command-not-found failures.
+- **ADR Publication**: Added [ADR 0021](./0021-launcher-command-fallback.md) to document the fallback design.
+
+---
+
 ## feature/heartbeat-notification - Optional Heartbeat / Keep-Alive Notification
 
 - **Submodule Feature**: Implemented a periodic heartbeat notification service (`HeartbeatService`) in `vendor/LazyGravity`.
