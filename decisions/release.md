@@ -4,6 +4,18 @@ This log lists major releases and their key architectural updates.
 
 ---
 
+## feature/heartbeat-notification - Optional Heartbeat / Keep-Alive Notification
+
+- **Submodule Feature**: Implemented a periodic heartbeat notification service (`HeartbeatService`) in `vendor/LazyGravity`.
+- **Command Support**: Registered the `/heartbeat` slash command with `on`, `off`, and `status` subcommands to allow remote configuration of the notification interval and target Discord channel.
+- **In-Place Updates**: Designed the heartbeat messages to edit themselves in-place to keep the Discord channel clean.
+- **Activity Tracking**: Integrated hooks into the message creation and interaction handlers to dynamically track when the last authorized operator activity occurred.
+- **Test Automation**: Added unit tests in `tests/services/heartbeatService.test.ts` to verify duration formatting, interval parsing, and active service start/stop lifecycle behavior.
+- **ADR Publication**: Added [ADR 0020](./0020-optional-heartbeat-notification.md) to document the heartbeat notification design decisions.
+- **Fixes & Enhancements**: Added channel type constraints to registration, implemented SendMessages permission checks, and added full command interaction tests in `tests/bot.test.ts`.
+
+---
+
 ## dev - Rebase Schedule Service Feature Branch
 
 - **Submodule Rebase**: Cleaned up and rebased the `feature/schedule-service` branch in `vendor/LazyGravity` onto `main`.
